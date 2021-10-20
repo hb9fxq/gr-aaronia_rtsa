@@ -34,11 +34,21 @@ namespace gr {
     class rtsa_http_server_source_impl : public rtsa_http_server_source
     {
      private:
+
+      void updateDemod();
+
       spectran_stream *m_spectran_streamer;
+
+      float m_samp_rate = 0;
+      bool m_tune_spectran_fc; 
+      float  m_tune_spectran_fc_offset = 0;
+      float m_iq_demod_fc = 0;
 
      public:
       rtsa_http_server_source_impl(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
       ~rtsa_http_server_source_impl();
+
+      void set_freq(const uint32_t freq_hz) override;
 
       // Where all the action really happens
       int work(

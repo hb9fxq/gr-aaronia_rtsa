@@ -1,12 +1,14 @@
 id: aaronia_rtsa_rtsa_http_server_source
-label: rtsa_http_server_source
+label: Spectran V6 Mission HTTP Source
 category: '[aaronia_rtsa]'
 flags: [ throttle, python, cpp ]
 
 templates:
   imports: import aaronia_rtsa
   make: aaronia_rtsa.rtsa_http_server_source(${endpoint}, ${samp_rate}, ${tune_spectran_fc}, ${tune_spectran_fc_offset}, ${iq_demod_fc})
-
+  callbacks: 
+  - set_freq(${iq_demod_fc}) 
+  
 parameters:
 - id: endpoint
   label: RTSA Suite HTTP Endpoint
@@ -22,6 +24,7 @@ parameters:
   label: Center Frequency
   dtype: real
   default: 2450e6
+  
 
 - id: tune_spectran_fc
   label: Tune Spectran Center Frequency

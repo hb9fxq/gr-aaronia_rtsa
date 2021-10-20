@@ -29,31 +29,33 @@
 #include <gnuradio/io_signature.h>
 #include "rtsa_http_server_source_impl.h"
 
-namespace gr {
-  namespace aaronia_rtsa {
+namespace gr
+{
+  namespace aaronia_rtsa
+  {
 
     rtsa_http_server_source::sptr
     rtsa_http_server_source::make(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
     {
-      return gnuradio::get_initial_sptr
-        (new rtsa_http_server_source_impl(endpoint, samp_rate, tune_spectran_fc, tune_spectran_fc_offset, iq_demod_fc));
+      return gnuradio::get_initial_sptr(new rtsa_http_server_source_impl(endpoint, samp_rate, tune_spectran_fc, tune_spectran_fc_offset, iq_demod_fc));
     }
-
 
     /*
      * The private constructor
      */
     rtsa_http_server_source_impl::rtsa_http_server_source_impl(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
-      : gr::sync_block("rtsa_http_server_source",
-              gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(1, 1, sizeof(gr_complex)))
+        : gr::sync_block("rtsa_http_server_source",
+                         gr::io_signature::make(0, 0, 0),
+                         gr::io_signature::make(1, 1, sizeof(gr_complex)))
     {
       m_spectran_streamer = new spectran_stream(spectran_stream::STREAMER_TYPE::QUEUED_CF32, endpoint);
-      m_spectran_streamer->UpdateDemodulator(iq_demod_fc, tune_spectran_fc?tune_spectran_fc_offset:0e6 ,samp_rate);
       m_spectran_streamer->StartStreamingThread();
-
-
-            
+      m_samp_rate = samp_rate;
+      m_tune_spectran_fc = tune_spectran_fc;
+      m_tune_spectran_fc_offset = tune_spectran_fc_offset;
+      m_iq_demod_fc = iq_demod_fc;
+      //set_output_multiple(16000);
+      updateDemod();
     }
 
     /*
@@ -63,16 +65,27 @@ namespace gr {
     {
     }
 
+    void
+    rtsa_http_server_source_impl::updateDemod()
+    {
+      m_spectran_streamer->UpdateDemodulator(m_iq_demod_fc, m_tune_spectran_fc ?  m_tune_spectran_fc_offset: 0e6, (long)m_samp_rate );
+    }
+
+    void
+    rtsa_http_server_source_impl::set_freq(uint32_t freq_hz)
+    {
+      m_iq_demod_fc = freq_hz;
+      updateDemod();
+    }
+
     int
     rtsa_http_server_source_impl::work(int noutput_items,
-        gr_vector_const_void_star &input_items,
-        gr_vector_void_star &output_items)
+                                       gr_vector_const_void_star &input_items,
+                                       gr_vector_void_star &output_items)
     {
       gr_complex *out = (gr_complex *)output_items[0];
-      m_spectran_streamer->GetSamples(noutput_items, out);
-      return noutput_items;
+      return m_spectran_streamer->GetSamples(noutput_items, out);
     }
 
   } /* namespace aaronia_rtsa */
 } /* namespace gr */
-

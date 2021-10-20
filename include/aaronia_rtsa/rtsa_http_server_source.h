@@ -50,6 +50,9 @@ namespace gr {
        * creating new instances.
        */
       static sptr make(std::string, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
+   
+      virtual void set_freq(const uint32_t freq_hz) = 0;
+   
     };
 
   } // namespace aaronia_rtsa
