@@ -1,0 +1,42 @@
+id: aaronia_rtsa_rtsa_http_server_source
+label: rtsa_http_server_source
+category: '[aaronia_rtsa]'
+flags: [ throttle, python, cpp ]
+
+templates:
+  imports: import aaronia_rtsa
+  make: aaronia_rtsa.rtsa_http_server_source(${endpoint}, ${samp_rate}, ${tune_spectran_fc}, ${tune_spectran_fc_offset}, ${iq_demod_fc})
+
+parameters:
+- id: endpoint
+  label: RTSA Suite HTTP Endpoint
+  dtype: string
+  default: '127.0.0.1:54664'
+
+- id: samp_rate
+  label: Sampling Rate
+  dtype: float
+  default: samp_rate
+
+- id: iq_demod_fc
+  label: Center Frequency
+  dtype: real
+  default: 2450e6
+
+- id: tune_spectran_fc
+  label: Tune Spectran Center Frequency
+  dtype: bool
+  default: true
+
+- id: tune_spectran_fc_offset
+  label: Spectran Center Frequency Offset
+  dtype: real
+  default: 0e6
+
+outputs:
+- domain: stream
+  dtype: complex
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

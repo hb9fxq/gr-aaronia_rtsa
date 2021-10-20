@@ -24,6 +24,7 @@
 include(GrPlatform) #define LIB_SUFFIX
 
 list(APPEND aaronia_rtsa_sources
+    rtsa_http_server_source_impl.cc
 )
 
 set(aaronia_rtsa_sources "${aaronia_rtsa_sources}" PARENT_SCOPE)
@@ -33,7 +34,7 @@ if(NOT aaronia_rtsa_sources)
 endif(NOT aaronia_rtsa_sources)
 
 add_library(gnuradio-aaronia_rtsa SHARED ${aaronia_rtsa_sources})
-target_link_libraries(gnuradio-aaronia_rtsa gnuradio::gnuradio-runtime)
+target_link_libraries(gnuradio-aaronia_rtsa gnuradio::gnuradio-runtime spectranstream)
 target_include_directories(gnuradio-aaronia_rtsa
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PUBLIC $<INSTALL_INTERFACE:include>
@@ -50,7 +51,7 @@ endif(APPLE)
 # Install built library files
 ########################################################################
 include(GrMiscUtils)
-GR_LIBRARY_FOO(gnuradio-aaronia_rtsa)
+GR_LIBRARY_FOO(gnuradio-aaronia_rtsa spectranstream)
 
 ########################################################################
 # Print summary
@@ -81,3 +82,4 @@ foreach(qa_file ${test_aaronia_rtsa_sources})
         ${CMAKE_CURRENT_SOURCE_DIR}/${qa_file}
     )
 endforeach(qa_file)
+#    ${CMAKE_CURRENT_SOURCE_DIR}/qa_rtsa_http_server_source.cc

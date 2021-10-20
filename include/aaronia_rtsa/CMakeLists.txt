@@ -23,5 +23,5 @@
 ########################################################################
 install(FILES
     api.h
-    DESTINATION include/aaronia_rtsa
+    rtsa_http_server_source.h DESTINATION include/aaronia_rtsa
 )
