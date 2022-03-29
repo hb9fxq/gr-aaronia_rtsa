@@ -34,6 +34,11 @@ if(NOT aaronia_rtsa_sources)
 endif(NOT aaronia_rtsa_sources)
 
 add_library(gnuradio-aaronia_rtsa SHARED ${aaronia_rtsa_sources})
+
+
+add_library( spectranstream SHARED IMPORTED)
+set_property(TARGET spectranstream PROPERTY IMPORTED_LOCATION "${SPECTRANSTREAM_LIBRARY}")
+
 target_link_libraries(gnuradio-aaronia_rtsa gnuradio::gnuradio-runtime spectranstream)
 target_include_directories(gnuradio-aaronia_rtsa
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
