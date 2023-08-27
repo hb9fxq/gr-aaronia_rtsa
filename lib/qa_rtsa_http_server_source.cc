@@ -25,7 +25,7 @@
 #include <gnuradio/attributes.h>
 #include <cppunit/TestAssert.h>
 #include "qa_rtsa_http_server_source.h"
-#include <aaronia_rtsa/rtsa_http_server_source.h>
+#include <gnuradio/aaronia_rtsa/rtsa_http_server_source.h>
 
 namespace gr {
   namespace aaronia_rtsa {

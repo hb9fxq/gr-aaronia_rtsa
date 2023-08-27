@@ -4,8 +4,8 @@ category: '[aaronia_rtsa]'
 flags: [ throttle, python, cpp ]
 
 templates:
-  imports: import aaronia_rtsa
-  make: aaronia_rtsa.rtsa_http_server_source(${endpoint}, ${samp_rate}, ${tune_spectran_fc}, ${tune_spectran_fc_offset}, ${iq_demod_fc})
+  imports: import gnuradio.aaronia_rtsa as aaronia_rtsa
+  make: aaronia_rtsa.rtsa_http_server_source(${endpoint}, ${demod_block}, ${spectran_block}, ${samp_rate}, ${tune_spectran_fc}, ${tune_spectran_fc_offset}, ${iq_demod_fc})
   callbacks: 
   - set_freq(${iq_demod_fc}) 
   
@@ -14,6 +14,16 @@ parameters:
   label: RTSA Suite HTTP Endpoint
   dtype: string
   default: '127.0.0.1:54664'
+
+- id: demod_block
+  label: RTSA Suite Demod Block Name
+  dtype: string
+  default: 'Block_IQDemodulator_1'
+
+- id: spectran_block
+  label: RTSA Suite Spectran Block Name
+  dtype: string
+  default: 'Block_Spectran_V6B_1'
 
 - id: samp_rate
   label: Sampling Rate
