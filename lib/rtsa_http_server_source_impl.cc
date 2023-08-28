@@ -35,15 +35,15 @@ namespace gr
   {
 
     rtsa_http_server_source::sptr
-    rtsa_http_server_source::make(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
+    rtsa_http_server_source::make(std::string endpoint, std::string demod_block, std::string spectran_block, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
     {
-      return gnuradio::get_initial_sptr(new rtsa_http_server_source_impl(endpoint, samp_rate, tune_spectran_fc, tune_spectran_fc_offset, iq_demod_fc));
+      return gnuradio::get_initial_sptr(new rtsa_http_server_source_impl(endpoint, demod_block, spectran_block, samp_rate, tune_spectran_fc, tune_spectran_fc_offset, iq_demod_fc));
     }
 
     /*
      * The private constructor
      */
-    rtsa_http_server_source_impl::rtsa_http_server_source_impl(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
+    rtsa_http_server_source_impl::rtsa_http_server_source_impl(std::string endpoint, std::string demod_block, std::string spectran_block, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc)
         : gr::sync_block("rtsa_http_server_source",
                          gr::io_signature::make(0, 0, 0),
                          gr::io_signature::make(1, 1, sizeof(gr_complex)))
@@ -54,6 +54,8 @@ namespace gr
       m_tune_spectran_fc = tune_spectran_fc;
       m_tune_spectran_fc_offset = tune_spectran_fc_offset;
       m_iq_demod_fc = iq_demod_fc;
+      demod_block = demod_block;
+      spectran_block = spectran_block;
       //set_output_multiple(16000);
       updateDemod();
     }
@@ -68,7 +70,7 @@ namespace gr
     void
     rtsa_http_server_source_impl::updateDemod()
     {
-      m_spectran_streamer->UpdateDemodulator(m_iq_demod_fc, m_tune_spectran_fc ?  m_tune_spectran_fc_offset: 0e6, (long)m_samp_rate );
+      m_spectran_streamer->UpdateDemodulator("Block_IQDemodulator_1", "Block_Spectran_V6B_1", m_iq_demod_fc, m_tune_spectran_fc ? m_tune_spectran_fc_offset: 0e6, m_samp_rate );
     }
 
     void

@@ -25,7 +25,7 @@
 #ifndef INCLUDED_AARONIA_RTSA_RTSA_HTTP_SERVER_SOURCE_H
 #define INCLUDED_AARONIA_RTSA_RTSA_HTTP_SERVER_SOURCE_H
 
-#include <aaronia_rtsa/api.h>
+#include <gnuradio/aaronia_rtsa/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {
@@ -39,7 +39,7 @@ namespace gr {
     class AARONIA_RTSA_API rtsa_http_server_source : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<rtsa_http_server_source> sptr;
+      typedef std::shared_ptr<rtsa_http_server_source> sptr;
 
       /*!
        * \brief Return a shared_ptr to a new instance of aaronia_rtsa::rtsa_http_server_source.
@@ -49,7 +49,7 @@ namespace gr {
        * class. aaronia_rtsa::rtsa_http_server_source::make is the public interface for
        * creating new instances.
        */
-      static sptr make(std::string, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
+      static sptr make(std::string, std::string demod_block, std::string spectran_block, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
    
       virtual void set_freq(const uint32_t freq_hz) = 0;
    

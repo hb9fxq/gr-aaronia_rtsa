@@ -25,7 +25,7 @@
 #ifndef INCLUDED_AARONIA_RTSA_RTSA_HTTP_SERVER_SOURCE_IMPL_H
 #define INCLUDED_AARONIA_RTSA_RTSA_HTTP_SERVER_SOURCE_IMPL_H
 
-#include <aaronia_rtsa/rtsa_http_server_source.h>
+#include <gnuradio/aaronia_rtsa/rtsa_http_server_source.h>
 #include <spectranstream.h>
 
 namespace gr {
@@ -45,7 +45,7 @@ namespace gr {
       float m_iq_demod_fc = 0;
 
      public:
-      rtsa_http_server_source_impl(std::string endpoint, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
+      rtsa_http_server_source_impl(std::string endpoint, std::string demod_block, std::string spectran_block, float samp_rate, bool tune_spectran_fc, float tune_spectran_fc_offset, float iq_demod_fc);
       ~rtsa_http_server_source_impl();
 
       void set_freq(const uint32_t freq_hz) override;
